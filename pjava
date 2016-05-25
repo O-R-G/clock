@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+
+parser = argparse.ArgumentParser()
+cmds = {}
+
+# processing action
+# defaults to "run" if none given
+choices = ["build", "run", "present", "export"]
+parser.add_argument("action",
+                    nargs='?',
+                    default="run",
+                    choices=choices,
+                    help="action to run on the sketch")
+
+# sketch directory
+parser.add_argument("sketch_dir",
+                    help="directory of sketch to run")
+
+# optional arguments
+parser.add_argument("-c", "--clean",
+                    action="store_true",
+                    help="don't run -- only clean")
+
+parser.add_argument("-x", "--x-java",
+                    action="store_true",
+                    help="exclude java for export")
+
+parser.add_argument("--dry-run",
+                    action="store_true",
+                    help="don't execute",
+                    dest="dry_run")
+
+parser.add_argument("-v", "--verbose",
+                    action="store_true",
+                    help="be verbose")
+                    
+parser.add_argument("-o", "--output-dir",
+                    help="directory to output java app")
+                    
+args = parser.parse_args()
+
+s_abspath = os.path.abspath(args.sketch_dir)
+
+# TODO: make sure this path does not exist
+# TODO: use default "output" folder if no output_dir provided on commandline
+
+if args.output_dir:
+    s_outpath = os.path.abspath(args.output_dir)
+else:
+    s_outpath = os.path.join(s_abspath, "output")
+
+# s_outpath = os.path.abspath(args.output_dir)
+
+if not args.clean:
+    # run processing command
+    cmd = "processing-java --sketch={} --output={} "
+    if args.action == "export":
+        if args.x_java:
+            cmd += "--no-java "
+        cmd += "--platform=macosx "
+    cmd += "--{}"
+    cmd = cmd.format(s_abspath, s_outpath, args.action)
+    cmds["run"] = cmd
+    if args.verbose or args.dry_run:
+        print cmds["run"]
+    if not args.dry_run:
+        os.system(cmds["run"])
+
+# cleanup processing
+cmd = "rm -rf {}".format(s_outpath)
+cmds["cleanup"] = cmd
+
+if args.action == "run" or args.action == "present":
+    if args.verbose or args.dry_run:
+        print cmds["cleanup"]
+    if not args.dry_run:
+        os.system(cmds["cleanup"])
