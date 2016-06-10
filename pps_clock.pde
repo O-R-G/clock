@@ -2,15 +2,18 @@
 // O-R-G 
 
 IntDict circle;
-int h, m, s, delta, gamma;
+int h, m, s, delta, gamma, fr, speed;
 boolean accelerate;
 
 
 void setup() 
 {
-    size(300, 300);	// [960]
-    // pixelDensity(2);
-    frameRate(60);
+    size(960, 960);
+    pixelDensity(2);
+    fr = 30;
+    speed = 10;
+    frameRate(fr);
+
     stroke(0);
     smooth();
     accelerate = false;
@@ -20,8 +23,8 @@ void setup()
         h = 0;
         m = 0;
         s = 0;
-        delta = 1;
-        gamma = 1;
+        delta = - (int)(3600 / (fr * speed));
+        gamma = 0;
     }
     
     circle = new IntDict();
@@ -45,7 +48,7 @@ void draw()
     // circle
     noFill();
     stroke(255);
-    strokeWeight(2);
+    strokeWeight(3);
     ellipse(x, y, cw, ch);
     
     // noStroke();
@@ -54,6 +57,7 @@ void draw()
     
     if (accelerate)
     {
+        /*
         s = (s + delta);
         if (s >= 60)
             m += s / 60;
@@ -62,6 +66,23 @@ void draw()
         h = h % 12;
         m = m % 60;
         s = s % 60;
+        */
+        s = (s + delta);
+        if (s < 0)
+        {
+            m += (int) floor(((float) s ) / 60);
+            s += 60;
+        }
+        if (m < 0)
+        {
+            h += (int) floor(((float) m ) / 60);
+            m += 60;
+        }
+        if (h < 0)
+        {
+            h += 12;
+        }
+
         delta += gamma;
     }
     else
@@ -84,14 +105,14 @@ void draw()
     // seconds
     if (!accelerate)
     {
-        strokeWeight(2);
+        strokeWeight(3);
         line(x, x, cos(sa) * sl + x, sin(sa) * sl + y);
     }
     // minutes
-    strokeWeight(3);
+    strokeWeight(5);
     line(x, x, cos(ma) * ml + x, sin(ma) * ml + y);
     
     // hours
-    strokeWeight(3);
+    strokeWeight(5);
     line(x, x, cos(ha) * hl + x, sin(ha) * hl + y);
 }
