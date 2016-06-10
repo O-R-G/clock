@@ -8,7 +8,7 @@ boolean accelerate;
 
 void setup() 
 {
-    size(960, 960);
+    size(300, 300);	// [960]
     // pixelDensity(2);
     frameRate(60);
     stroke(0);
