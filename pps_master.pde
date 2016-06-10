@@ -1,15 +1,21 @@
 // Public Private Secret Clock
 // O-R-G 
 
-IntDict circle;
-int h, m, s, delta, gamma, fr, speed;
-boolean accelerate;
+import processing.sound.*;
 
+SoundFile ding, dang, dong;
+
+int h, m, s, delta, gamma, fr, speed;
+int radius;
+int x,y;
+
+int dinginterval, dinglastsec;
+
+boolean accelerate;
 
 void setup() 
 {
     size(960, 960);
-    pixelDensity(2);
     fr = 30;
     speed = 10;
     frameRate(fr);
@@ -17,7 +23,13 @@ void setup()
     stroke(0);
     smooth();
     accelerate = false;
-    
+
+	x = width / 2;
+	y = width / 2;
+    radius = int(width * .40);
+
+	dinginterval = 5; // in seconds
+
     if (accelerate)
     {
         h = 0;
@@ -27,11 +39,11 @@ void setup()
         gamma = 0;
     }
     
-    circle = new IntDict();
-    circle.set("x", width / 2);
-    circle.set("y", height / 2);
-    circle.set("w", (int)(width * .80));
-    circle.set("h", (int)(width * .80));
+    ding = new SoundFile(this, "ding-44k.aif");
+    dang = new SoundFile(this, "ding-44k.aif");
+    dong = new SoundFile(this, "ding-44k.aif");
+	dang.rate(.25);
+	dong.rate(.125);
 }
 
 void draw() 
@@ -40,16 +52,10 @@ void draw()
     float ha, ma, sa;
     int hl, ml, sl;
     
-    int x = circle.get("x");
-    int y = circle.get("y");
-    int cw = circle.get("w");
-    int ch = circle.get("h");
-        
-    // circle
     noFill();
     stroke(255);
     strokeWeight(3);
-    ellipse(x, y, cw, ch);
+    ellipse(x, y, radius*2, radius*2);
     
     // noStroke();
     // Angles for sin() and cos() start at 3 o'clock;
@@ -91,14 +97,32 @@ void draw()
         m = minute();
         s = second();
     }
-    
+   
+	// ding? 
+	if (s % dinginterval == 0 && dinglastsec != s) 
+	{
+		ding.play();
+		dinglastsec = s;
+	} 
+
+/*
+    if (m % compswitchinterval == 0 && compswitchlastmin != m)
+    {
+        // choose random pixelcomp
+        comptype = int(random(0, numcomps));
+        compswitchlastmin = m;
+    }
+*/	
+
+
+
     sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
     ma = map(m + ((float) s) / 60.0, 0, 60, 0, TWO_PI) - HALF_PI;
     ha = map(h % 12 + ((float) m) / 60.0, 0, 12, 0, TWO_PI) - HALF_PI;
     
-    hl = (int)(cw / 2 * 0.50);
-    ml = (int)(cw / 2 * 0.80);
-    sl = (int)(cw / 2 * 0.90);
+    hl = (int)(radius * 0.50);
+    ml = (int)(radius * 0.80);
+    sl = (int)(radius * 0.90);
 
     stroke(255);
     
@@ -116,3 +140,26 @@ void draw()
     strokeWeight(5);
     line(x, x, cos(ha) * hl + x, sin(ha) * hl + y);
 }
+
+void keyPressed()
+{
+    switch(key)
+    {
+        case 'd':
+			ding.play();
+			dinglastsec = s;
+            break;
+        case 's':
+			dang.play();
+			dinglastsec = s;
+            break;
+        case 'a':
+			dong.play();
+			dinglastsec = s;
+            break;
+        default:
+            break;
+	}
+}
+
+
