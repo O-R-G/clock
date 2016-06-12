@@ -1,9 +1,9 @@
-// Public Private Secret Clock
+// Public Private Secret master
 // O-R-G 
 
 import processing.sound.*;
 
-SoundFile ding, dang, dong;
+SoundFile ding, dang, dong, ding_detune, dang_detune, dong_detune;
 
 int h, m, s, delta, gamma, fr, speed;
 int radius;
@@ -42,8 +42,14 @@ void setup()
     ding = new SoundFile(this, "ding-44k.aif");
     dang = new SoundFile(this, "ding-44k.aif");
     dong = new SoundFile(this, "ding-44k.aif");
+    ding_detune = new SoundFile(this, "ding-44k.aif");
+    dang_detune = new SoundFile(this, "ding-44k.aif");
+    dong_detune = new SoundFile(this, "ding-44k.aif");
 	dang.rate(.25);
 	dong.rate(.125);
+	ding_detune.rate(.99);
+	dang_detune.rate(.24);
+	dong_detune.rate(.115);
 }
 
 void draw() 
@@ -97,24 +103,15 @@ void draw()
         m = minute();
         s = second();
     }
-   
+  
+/* 
 	// ding? 
 	if (s % dinginterval == 0 && dinglastsec != s) 
 	{
 		ding.play();
 		dinglastsec = s;
 	} 
-
-/*
-    if (m % compswitchinterval == 0 && compswitchlastmin != m)
-    {
-        // choose random pixelcomp
-        comptype = int(random(0, numcomps));
-        compswitchlastmin = m;
-    }
-*/	
-
-
+*/
 
     sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
     ma = map(m + ((float) s) / 60.0, 0, 60, 0, TWO_PI) - HALF_PI;
@@ -149,17 +146,27 @@ void keyPressed()
 			ding.play();
 			dinglastsec = s;
             break;
+        case 'D':
+			ding_detune.play();
+			dinglastsec = s;
+            break;
         case 's':
 			dang.play();
+			dinglastsec = s;
+            break;
+        case 'S':
+			dang_detune.play();
 			dinglastsec = s;
             break;
         case 'a':
 			dong.play();
 			dinglastsec = s;
             break;
+        case 'A':
+			dong_detune.play();
+			dinglastsec = s;
+            break;
         default:
             break;
 	}
 }
-
-
