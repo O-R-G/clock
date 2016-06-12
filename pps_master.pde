@@ -5,13 +5,17 @@ import processing.sound.*;
 
 SoundFile ding, dang, dong, ding_detune, dang_detune, dong_detune;
 
-int h, m, s, delta, gamma, fr, speed;
+int x, y;
+int h, m, s; 
+int lasthour;
+int lastmin;
+int lastsec;
+int delta, gamma;
+int fr, speed;
 int radius;
-int x,y;
-
-int dinginterval, dinglastsec;
 
 boolean accelerate;
+boolean verbose = true;
 
 void setup() 
 {
@@ -27,8 +31,6 @@ void setup()
 	x = width / 2;
 	y = width / 2;
     radius = int(width * .40);
-
-	dinginterval = 5; // in seconds
 
     if (accelerate)
     {
@@ -55,21 +57,20 @@ void setup()
 void draw() 
 {
     background(0);
-    float ha, ma, sa;
-    int hl, ml, sl;
-    
     noFill();
     stroke(255);
     strokeWeight(3);
+    float ha, ma, sa;
+    int hl, ml, sl;
+    
     ellipse(x, y, radius*2, radius*2);
     
-    // noStroke();
     // Angles for sin() and cos() start at 3 o'clock;
     // subtract HALF_PI to make them start at the top
     
-    if (accelerate)
-    {
+    if (accelerate) {
         /*
+		// playback hands
         s = (s + delta);
         if (s >= 60)
             m += s / 60;
@@ -94,35 +95,29 @@ void draw()
         {
             h += 12;
         }
-
         delta += gamma;
-    }
-    else
-    {
+    } else {
+		// get current time
+
         h = hour();
         m = minute();
-        s = second();
+        s = second();    
+		if (h == 0) h = 24; // avoid 0 %
+		if (m == 0) m = 60;             
+		if (s == 0) s = 60;
+
+		lasthour = checkHour(h, lasthour);
+		lastmin = checkMin(m, lastmin);
+    	lastsec = checkSec(s, lastsec);
     }
   
-/* 
-	// ding? 
-	if (s % dinginterval == 0 && dinglastsec != s) 
-	{
-		ding.play();
-		dinglastsec = s;
-	} 
-*/
-
     sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
     ma = map(m + ((float) s) / 60.0, 0, 60, 0, TWO_PI) - HALF_PI;
-    ha = map(h % 12 + ((float) m) / 60.0, 0, 12, 0, TWO_PI) - HALF_PI;
-    
+    ha = map(h % 12 + ((float) m) / 60.0, 0, 12, 0, TWO_PI) - HALF_PI;    
     hl = (int)(radius * 0.50);
     ml = (int)(radius * 0.80);
     sl = (int)(radius * 0.90);
 
-    stroke(255);
-    
     // seconds
     if (!accelerate)
     {
@@ -138,35 +133,106 @@ void draw()
     line(x, x, cos(ha) * hl + x, sin(ha) * hl + y);
 }
 
+
+
+// timers
+
+int checkHour(int thish, int thislasthour) {
+	if (thish != thislasthour) {
+		switch (thish) {            
+			case 12:
+			case 24:
+                // something
+                if (verbose) println("+ " + thish);
+                thislasthour = thish;
+                break;
+            default:
+                thislasthour = thish - 1;
+                break;
+		}
+	}
+	return thislasthour;
+}
+
+int checkMin(int thism, int thislastmin) {
+	if (thism != thislastmin) {
+		switch (thism) {            
+			case 5:
+                // something
+                if (verbose) println("+ " + thism);
+                thislastmin = thism;
+                break;
+            default:
+                thislastmin = thism - 1;
+                break;
+		}
+	}
+	return thislastmin;
+}
+
+int checkSec(int thiss, int thislastsec) {
+	if (thiss != thislastsec) {
+		switch (thiss) {            
+			case 10:
+			case 40:
+                // something
+				ding.play();
+                if (verbose) println("+ " + thiss);
+                thislastsec = thiss;
+                break;
+			case 20:
+			case 50:
+                // something
+				dang.play();
+                if (verbose) println("+ " + thiss);
+                thislastsec = thiss;
+                break;
+			case 30:
+			case 60:
+                // something
+				dong.play();
+                if (verbose) println("+ " + thiss);
+                thislastsec = thiss;
+                break;
+            default:
+                thislastsec = thiss - 1;
+                break;
+		}
+	}
+	return thislastsec;
+}
+
+
+
+
+
+
+
+
 void keyPressed()
 {
     switch(key)
     {
         case 'd':
 			ding.play();
-			dinglastsec = s;
             break;
         case 'D':
 			ding_detune.play();
-			dinglastsec = s;
             break;
         case 's':
 			dang.play();
-			dinglastsec = s;
             break;
         case 'S':
 			dang_detune.play();
-			dinglastsec = s;
             break;
         case 'a':
 			dong.play();
-			dinglastsec = s;
             break;
         case 'A':
 			dong_detune.play();
-			dinglastsec = s;
             break;
         default:
             break;
 	}
 }
+
