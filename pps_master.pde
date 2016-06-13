@@ -162,8 +162,8 @@ int checkSec(int thiss, int thislastsec) {
 	if (thiss != thislastsec) {
         switch (thiss) {            
             case 0:
-                if (!rewinding)	
-                    ding.play();
+                // if (!rewinding)	
+                //    ding.play();
                 if (verbose) println("+ " + thiss);
                 thislastsec = thiss;
                 break;
