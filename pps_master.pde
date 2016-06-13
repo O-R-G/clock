@@ -1,5 +1,7 @@
 // Public Private Secret master
 // O-R-G 
+// on mac mini, requires a sound input source plugged in to run
+// b/c Sound library looks for equal channels in and out
 
 import processing.sound.*;
 
@@ -126,12 +128,12 @@ void draw()
 // timers
 
 int checkHour(int thish, int thislasthour) {
-	if (thish != thislasthour) {
-		switch (thish) {            
-			case 12:
-			case 24:
-                // something
-                if (verbose) println("+ " + thish);
+    if (thish != thislasthour) {
+        switch (thish) {            
+            case 0:
+            case 12:
+				dong.play();
+		        if (verbose) println("+ " + thish);
                 thislasthour = thish;
                 break;
             default:
@@ -145,8 +147,8 @@ int checkHour(int thish, int thislasthour) {
 int checkMin(int thism, int thislastmin) {
 	if (thism != thislastmin) {
 		switch (thism) {            
-			case 5:
-                // something
+            case 0:
+                dang.play();
                 if (verbose) println("+ " + thism);
                 thislastmin = thism;
                 break;
@@ -160,34 +162,18 @@ int checkMin(int thism, int thislastmin) {
 
 int checkSec(int thiss, int thislastsec) {
 	if (thiss != thislastsec) {
-		switch (thiss) {            
-			case 10:
-			case 40:
-                // something
-				ding.play();
+        switch (thiss) {            
+            case 0:
+                ding.play();
                 if (verbose) println("+ " + thiss);
-                thislastsec = thiss;
-                break;
-			case 20:
-			case 50:
-                // something
-				dang.play();
-                if (verbose) println("+ " + thiss);
-                thislastsec = thiss;
-                break;
-			case 30:
-			case 60:
-                // something
-				dong.play();
-                if (verbose) println("+ " + thiss);
-                thislastsec = thiss;
+                    thislastsec = thiss;
                 break;
             default:
                 thislastsec = thiss - 1;
                 break;
 		}
 	}
-	return thislastsec;
+    return thislastsec;
 }
 
 
