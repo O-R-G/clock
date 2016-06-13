@@ -26,6 +26,7 @@ boolean verbose = true;
 void setup() {
     size(960, 960); // [960, 960]
     frameRate(60);
+    noCursor();
 
     stroke(0);
     smooth();
