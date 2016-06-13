@@ -24,7 +24,7 @@ boolean rewinding;
 boolean verbose = true;
 
 void setup() {
-    size(480, 480); // [960, 960]
+    size(960, 960); // [960, 960]
     frameRate(60);
 
     stroke(0);
@@ -65,13 +65,12 @@ void draw() {
         h = hour();
         m = minute();
         s = second();
+        lasthour = checkHour(h, lasthour);
+        lastmin = checkMin(m, lastmin);
+        lastsec = checkSec(s, lastsec);
 	} else {
         rewind(h,m,s);  // could have this return values
     }
-
-    lasthour = checkHour(h, lasthour);
-    lastmin = checkMin(m, lastmin);
-    lastsec = checkSec(s, lastsec);
 
     ha = map(h % 12, 0, 12, 0, TWO_PI) - HALF_PI;
     ma = map(m, 0, 60, 0, TWO_PI) - HALF_PI;  
@@ -126,10 +125,10 @@ void rewind(int thish, int thism, int thiss) {
 
 int checkHour(int thish, int thislasthour) {
     if (thish != thislasthour) {
-        switch (thish) {            
+        switch (thish) {
             case 0:
             case 12:
-                if (!rewinding)	
+                if (!rewinding)
                     dong.play();
 		        if (verbose) println("+ " + thish);
                 thislasthour = thish;
@@ -146,8 +145,8 @@ int checkMin(int thism, int thislastmin) {
 	if (thism != thislastmin) {
 		switch (thism) {            
             case 0:
-                if (!rewinding)	
-                    dang.play();
+                rewinding =! rewinding;
+                ding.play();
                 if (verbose) println("+ " + thism);
                 thislastmin = thism;
                 break;
