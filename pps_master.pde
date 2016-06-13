@@ -44,25 +44,20 @@ void setup()
     ding = new SoundFile(this, "ding-44k.aif");
     dang = new SoundFile(this, "ding-44k.aif");
     dong = new SoundFile(this, "ding-44k.aif");
-    ding_detune = new SoundFile(this, "ding-44k.aif");
-    dang_detune = new SoundFile(this, "ding-44k.aif");
-    dong_detune = new SoundFile(this, "ding-44k.aif");
 	dang.rate(.25);
 	dong.rate(.125);
-	ding_detune.rate(.99);
-	dang_detune.rate(.24);
-	dong_detune.rate(.115);
 }
 
 void draw() 
 {
+    float ha, ma, sa;
+    int hl, ml, sl;
+
     background(0);
     noFill();
     stroke(255);
-    strokeWeight(3);
-    float ha, ma, sa;
-    int hl, ml, sl;
     
+    strokeWeight(3);
     ellipse(x, y, radius*2, radius*2);
     
     // Angles for sin() and cos() start at 3 o'clock;
@@ -101,37 +96,30 @@ void draw()
 
         h = hour();
         m = minute();
-        s = second();    
-		if (h == 0) h = 24; // avoid 0 %
-		if (m == 0) m = 60;             
-		if (s == 0) s = 60;
+        s = second();
 
 		lasthour = checkHour(h, lasthour);
 		lastmin = checkMin(m, lastmin);
     	lastsec = checkSec(s, lastsec);
     }
-  
-    sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
-    ma = map(m + ((float) s) / 60.0, 0, 60, 0, TWO_PI) - HALF_PI;
-    ha = map(h % 12 + ((float) m) / 60.0, 0, 12, 0, TWO_PI) - HALF_PI;    
+
+    sa = map(second(), 0, 60, 0, TWO_PI) - HALF_PI;
+    ma = map(minute(), 0, 60, 0, TWO_PI) - HALF_PI;  
+    ha = map(hour() % 12, 0, 12, 0, TWO_PI) - HALF_PI;
+
     hl = (int)(radius * 0.50);
     ml = (int)(radius * 0.80);
     sl = (int)(radius * 0.90);
 
-    // seconds
-    if (!accelerate)
-    {
-        strokeWeight(3);
-        line(x, x, cos(sa) * sl + x, sin(sa) * sl + y);
-    }
-    // minutes
+    strokeWeight(3);
+    line(x, x, cos(sa) * sl + x, sin(sa) * sl + y);
     strokeWeight(5);
     line(x, x, cos(ma) * ml + x, sin(ma) * ml + y);
-    
-    // hours
     strokeWeight(5);
     line(x, x, cos(ha) * hl + x, sin(ha) * hl + y);
 }
+
+
 
 
 
@@ -205,9 +193,7 @@ int checkSec(int thiss, int thislastsec) {
 
 
 
-
-
-
+// utility
 
 void keyPressed()
 {
@@ -216,20 +202,11 @@ void keyPressed()
         case 'd':
 			ding.play();
             break;
-        case 'D':
-			ding_detune.play();
-            break;
         case 's':
 			dang.play();
             break;
-        case 'S':
-			dang_detune.play();
-            break;
         case 'a':
 			dong.play();
-            break;
-        case 'A':
-			dong_detune.play();
             break;
         default:
             break;
