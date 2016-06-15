@@ -24,7 +24,7 @@ boolean rewinding;
 boolean verbose = true;
 
 void setup() {
-    size(960, 960); // [960, 960]
+    size(200, 200); // [960, 960]
     frameRate(60);
     noCursor();
 
@@ -68,7 +68,8 @@ void draw() {
         s = second();
         lasthour = checkHour(h, lasthour);
         lastmin = checkMin(m, lastmin);
-        lastsec = checkSec(s, lastsec);
+        // lastsec = checkSec(s, lastsec);
+        lastsec = checkMin(s, lastsec);
 	} else {
         rewind(h,m,s);  // could have this return values
     }
