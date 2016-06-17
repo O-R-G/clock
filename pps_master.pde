@@ -68,15 +68,13 @@ void draw() {
         s = second();
         lasthour = checkHour(h, lasthour);
         lastmin = checkMin(m, lastmin);
-        // lastsec = checkSec(s, lastsec);
-        lastsec = checkMin(s, lastsec);
+        lastsec = checkSec(s, lastsec);
 	} else {
         rewind(h,m,s);  // could have this return values
     }
 
-	// add incremental movement
-    ha = map(h % 12, 0, 12, 0, TWO_PI) - HALF_PI;
-    ma = map(m, 0, 60, 0, TWO_PI) - HALF_PI;  
+    ha = map(h % 12 + ((float) m) / 60.0, 0, 12, 0, TWO_PI) - HALF_PI;
+    ma = map(m + ((float) s) / 60.0, 0, 60, 0, TWO_PI) - HALF_PI;
     sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
 
     strokeWeight(3);
@@ -165,8 +163,6 @@ int checkSec(int thiss, int thislastsec) {
 	if (thiss != thislastsec) {
         switch (thiss) {            
             case 0:
-                // if (!rewinding)	
-                //    ding.play();
                 if (verbose) println("+ " + thiss);
                 thislastsec = thiss;
                 break;
