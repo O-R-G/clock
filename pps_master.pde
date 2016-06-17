@@ -24,13 +24,13 @@ boolean rewinding;
 boolean verbose = true;
 
 void setup() {
-    size(200, 200); // [960, 960]
+    size(960, 960); // [960, 960]
     frameRate(60);
     noCursor();
 
     stroke(0);
     smooth();
-
+	
 	x = width / 2;
 	y = width / 2;
     radius = int(width * .40);    
@@ -74,6 +74,7 @@ void draw() {
         rewind(h,m,s);  // could have this return values
     }
 
+	// add incremental movement
     ha = map(h % 12, 0, 12, 0, TWO_PI) - HALF_PI;
     ma = map(m, 0, 60, 0, TWO_PI) - HALF_PI;  
     sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
