@@ -190,7 +190,7 @@ void keyPressed() {
             break;
         case ' ':
             rewinding =! rewinding;
-            ding.play();
+            dong.play();
             break;
         default:
             break;
