@@ -13,7 +13,7 @@ Forked from [https://github.com/O-R-G/pps_master](https://github.com/O-R-G/pps_m
 
 This discrete macOS .app runs in a titlebar-less window anchored to the top left of the desktop as a desk accessory of sorts, particularly when running Finder with automatic hide/show menu bar in macOS 10.12 and later. 
 
-![](/Users/reinfurt/Documents/Softwares/Processing/clock/data/Screen\ Shot\ 2020-04-17\ at\ 8.41.35\ AM.png)
+![](https://raw.githubusercontent.com/O-R-G/clock/master/data/Screen%20Shot%202020-04-17%20at%208.41.35%20AM.png)
 
 Written in Processing. A compiled macOS .app with custom Finder icon ready to run can be found in /output.
 
