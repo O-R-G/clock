@@ -1,10 +1,14 @@
-// Public Private Secret master
+// "clock"
 // O-R-G 
 
-// on mac mini, requires a sound input source plugged in to run
-// b/c Sound library looks for equal channels in and out
-
 import processing.sound.*;
+
+/*
+// transparent window in process
+import processing.awt.PSurfaceAWT;
+import javax.swing.JFrame;
+JFrame frame;
+*/
 
 SoundFile ding, dang, dong;
 
@@ -23,10 +27,33 @@ int rewindduration;
 boolean rewinding;
 boolean verbose = true;
 
+PImage titlebaricon;
+
 void setup() {
-    size(960, 960); // [960, 960]
+    fullScreen();
+    surface.setSize(100, 100); 
+    surface.setTitle("clock");
+    surface.setResizable(true);
+    surface.setLocation(0,0);
+    titlebaricon = loadImage("clock.png");
+    surface.setIcon(titlebaricon);
+
+    /*
+    // set window opacity
+    frame = getJFrame();
+    frame.removeNotify();
+    frame.setUndecorated(true);
+    frame.setOpacity(0.5f);
+    frame.addNotify();
+    */
+
+    // for more on surface, see 
+    // https://discourse.processing.org/t/how-to-remove-title-bar/7537/7o
+    // https://discourse.processing.org/t/is-setundecorated-possible/1097/5
+    pixelDensity(displayDensity());
+
     frameRate(60);
-    noCursor();
+    // noCursor();
 
     stroke(0);
     smooth();
@@ -56,7 +83,7 @@ void setup() {
 }
 
 void draw() {
-    background(0);
+    background(0,0);
     noFill();
     stroke(255);
 
@@ -77,13 +104,13 @@ void draw() {
     ma = map(m + ((float) s) / 60.0, 0, 60, 0, TWO_PI) - HALF_PI;
     sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
 
-    strokeWeight(3);
+    strokeWeight(1);
     ellipse(x, y, radius*2, radius*2);
-    strokeWeight(3);
+    strokeWeight(1);
     line(x, x, cos(sa) * sl + x, sin(sa) * sl + y);
-    strokeWeight(5);
+    strokeWeight(2);
     line(x, x, cos(ma) * ml + x, sin(ma) * ml + y);
-    strokeWeight(5);
+    strokeWeight(2);
     line(x, x, cos(ha) * hl + x, sin(ha) * hl + y);
 }
 
@@ -197,3 +224,10 @@ void keyPressed() {
 	}
 }
 
+/*
+JFrame getJFrame() {
+  PSurfaceAWT surf = (PSurfaceAWT) getSurface();
+  PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
+  return (JFrame) canvas.getFrame();
+}
+*/

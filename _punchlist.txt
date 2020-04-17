@@ -1,2 +1,0 @@
-+ clock rewind
-x add image playback to clock rewind?
