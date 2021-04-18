@@ -43,15 +43,17 @@ int rewindcounter;
 int rewindduration;
 
 boolean rewinding;
-boolean verbose = true;
+boolean verbose = false;
 
 PImage titlebaricon;
 
 public void setup() {
     
     surface.setSize(100, 100); 
+    // surface.setSize(90, 90); 
     surface.setTitle("clock");
-    surface.setResizable(true);
+    // surface.setResizable(true);
+    surface.setResizable(false);
     surface.setLocation(0,0);
     titlebaricon = loadImage("clock.png");
     surface.setIcon(titlebaricon);
@@ -66,11 +68,12 @@ public void setup() {
     */
 
     // for more on surface, see 
-    // https://discourse.processing.org/t/how-to-remove-title-bar/7537/7o
+    // https://discourse.processing.org/t/how-to-remove-title-bar/7537/7
     // https://discourse.processing.org/t/is-setundecorated-possible/1097/5
     
 
-    frameRate(60);
+    // frameRate(60);
+    frameRate(1);
     // noCursor();
 
     stroke(0);
@@ -101,13 +104,15 @@ public void setup() {
 }
 
 public void draw() {
-    background(0,0);
+    // background(0,0);
+    background(0);
     noFill();
     stroke(255);
 
     float ha, ma, sa;
 
     if (!rewinding) {
+        frameRate(1);
         h = hour();
         m = minute();
         s = second();
@@ -115,6 +120,7 @@ public void draw() {
         lastmin = checkMin(m, lastmin);
         lastsec = checkSec(s, lastsec);
 	} else {
+        frameRate(60);
         rewind(h,m,s);  // could have this return values
     }
 
