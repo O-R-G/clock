@@ -34,8 +34,8 @@ void setup() {
     surface.setSize(100, 100); 
     // surface.setSize(90, 90); 
     surface.setTitle("clock");
-    // surface.setResizable(true);
-    surface.setResizable(false);
+    surface.setResizable(true);
+    // surface.setResizable(false);
     surface.setLocation(0,0);
     titlebaricon = loadImage("clock.png");
     surface.setIcon(titlebaricon);
@@ -61,9 +61,10 @@ void setup() {
     stroke(0);
     smooth();
 	
-	x = width / 2;
-	y = width / 2;
-    radius = int(width * .40);    
+	  x = width / 2;
+	  y = width / 2;
+    // radius = int(width * .40);    
+    radius = int(width * .33);    
 
     hl = (int)(radius * 0.50);
     ml = (int)(radius * 0.80);
