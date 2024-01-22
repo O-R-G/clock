@@ -1,1 +1,8 @@
+# macos finder 
+
+.DS_Store
+
+# compiled java
+
 macos-aarch64/
+output/
