@@ -1,7 +1,7 @@
 // "clock"
 // O-R-G 
 
-import processing.sound.*;
+// import processing.sound.*;
 
 /*
 // transparent window in process
@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 JFrame frame;
 */
 
-SoundFile ding, dang, dong;
+// SoundFile ding, dang, dong;
 
 int x, y;
 int h, m, s; 
@@ -78,12 +78,14 @@ void setup() {
     gamma = 0;
 
     rewindduration = 60;
-    
+
+    /*    
     ding = new SoundFile(this, "ding-44k.aif");
     dang = new SoundFile(this, "ding-44k.aif");
     dong = new SoundFile(this, "ding-44k.aif");
 	dang.rate(.25);
 	dong.rate(.125);
+    */
 }
 
 void draw() {
@@ -163,8 +165,8 @@ int checkHour(int thish, int thislasthour) {
         switch (thish) {
             case 0:
             case 12:
-                if (!rewinding)
-                    dong.play();
+                // if (!rewinding)
+                //    dong.play();
 		        if (verbose) println("+ " + thish);
                 thislasthour = thish;
                 break;
@@ -181,7 +183,7 @@ int checkMin(int thism, int thislastmin) {
 		switch (thism) {            
             case 0:
                 rewinding =! rewinding;
-                ding.play();
+                // ding.play();
                 if (verbose) println("+ " + thism);
                 thislastmin = thism;
                 break;
@@ -214,17 +216,17 @@ int checkSec(int thiss, int thislastsec) {
 void keyPressed() {
     switch(key) {
         case 'd':
-			ding.play();
+			// ding.play();
             break;
         case 's':
-			dang.play();
+			// dang.play();
             break;
         case 'a':
-			dong.play();
+			// dong.play();
             break;
         case ' ':
             rewinding =! rewinding;
-            dong.play();
+            // dong.play();
             break;
         default:
             break;
